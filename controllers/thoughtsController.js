@@ -1,65 +1,89 @@
-const {Thought , User} = require('./models')
+const { Thought, User, Reaction } = require('../models');
+const { Types } = require('mongoose');
 
-const thoughtsController = {
-    // get all thoughts
-    getAllThoughts: async (req, res) => {
+const thoughtController = {
+    async getThoughts(req, res) {
         try {
-          const thoughts = await Thought.find().sort({ createdAt: -1 });
-          res.json(thoughts);
+            const thought = await Thought.findOne().sort({ createdAt: -1 });
+            res.json(thought);
         } catch (err) {
-          res.status(500).json(err);
-        }
-      },
-    
-      // Get a single thought by its _id
-      getThoughtById: async (req, res) => {
+            res.status(500).json(err);
+        };
+    },
+
+    async getSingleThought(req, res) {
         try {
-          const thought = await Thought.findById(req.params.thoughtId);
-          res.json(thought);
+            const thought = await Thought.findOne({ _id: req.params.thoughtId });
+            if (!thought) {
+                res.status(404).json({ message: 'head(id) empty, no thoughts' });
+            } else {
+                res.json(thought);
+            }
         } catch (err) {
-          res.status(500).json(err);
+            res.status(500).json(err);
         }
-      },
-    
-      // Create a new thought
-      createThought: async (req, res) => {
+    },
+
+    async createThought(req, res) {
         try {
-          const thought = await Thought.create(req.body);
-          const user = await User.findById(thought.userId);
-          user.thoughts.push(thought._id);
-          await user.save();
-          res.json(thought);
+            const thought = await Thought.create(req.body);
+            res.status(200).json(thought);
         } catch (err) {
-          res.status(400).json(err);
+            res.status(500).json(err);
         }
-      },
-    
-      // Update a thought by its _id
-      updateThought: async (req, res) => {
+    },
+
+    async deleteThought(req, res) {
         try {
-          const thought = await Thought.findByIdAndUpdate(
-            req.params.thoughtId,
-            req.body,
-            { new: true }
-          );
-          res.json(thought);
+            const thought = await Thought.findByIdAndDelete({ _id: req.params.thoughtId });
+            res.status(200).json(thought);
         } catch (err) {
-          res.status(400).json(err);
+            res.status()
         }
-      },
-    
-      // Delete a thought by its _id
-      deleteThought: async (req, res) => {
+    },
+
+    async updateThought(req, res) {
         try {
-          const thought = await Thought.findByIdAndDelete(req.params.thoughtId);
-          const user = await User.findById(thought.userId);
-          user.thoughts.pull(thought._id);
-          await user.save();
-          res.json(thought);
+            const thought = await Thought.findByIdAndUpdate(req.params.thoughtId, req.body, {
+                new: true,
+            });
+            if (!thought) {
+                res.status(404).json({ message: 'head empty, no thoughts' });
+            } else {
+                res.json(thought);
+            }
         } catch (err) {
-          res.status(500).json(err);
+            res.status(500).json(err);
         }
-      }
-    };
-    
-    module.exports = thoughtsController;
+    },
+
+    async addReaction(req, res) {
+        try {
+            const thought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                { $addToSet: { reactions: req.body } },
+                { runValidators: true, new: true }
+            );
+            thought ? res.json(thought) : res.status(404).json({ message: notFound });
+        } catch (e) {
+            res.status(500).json(e);
+        }
+
+    },
+
+    async removeReaction(req, res) {
+        try {
+            const thought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                { $pull: { reactions: { reactionId: req.params.reactionId } } },
+                { runValidators: true, new: true }
+            );
+
+            thought ? res.json(thought) : res.status(404).json({ message: error });
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+}
+
+module.exports = thoughtController

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const formatDate = require('./formatDate'); // Import the formatDate function
+const formatDate = require('./formatDate');
+const reactionSchema= require('./reaction');
 
 const thoughtSchema = new mongoose.Schema({
   thoughtText: {
@@ -17,7 +18,7 @@ const thoughtSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  reactions: [ReactionSchema] // Define the Reaction schema here
+  reactions: [reactionSchema] // Define the Reaction schema here
 });
 
 // Create a virtual field to calculate reaction count

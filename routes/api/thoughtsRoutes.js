@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const thoughtsController = require('../controllers/thoughtsController'); // Import the thoughts controller
+const thoughtsController = require('../../controllers/thoughtsController'); // Import the thoughts controller
 
 // Route to get all thoughts
-router.get('/', thoughtsController.getAllThoughts);
+router.get('/', thoughtsController.getThoughts);
 
 // Route to get a single thought by its _id
-router.get('/:thoughtId', thoughtsController.getThoughtById);
+router.get('/:thoughtId', thoughtsController.getSingleThought);
 
 // Route to create a new thought
 router.post('/', thoughtsController.createThought);

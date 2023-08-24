@@ -1,5 +1,3 @@
-// formatDate.js
-
 // Implement a function to format timestamps
 function formatDate(timestamp) {
     // Convert the timestamp to a Date object
@@ -13,4 +11,5 @@ function formatDate(timestamp) {
   }
   
   module.exports = formatDate;
+  
   
