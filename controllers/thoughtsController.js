@@ -3,12 +3,13 @@ const { Types } = require('mongoose');
 
 const thoughtController = {
     async getThoughts(req, res) {
-        try {
-            const thought = await Thought.findOne().sort({ createdAt: -1 });
+        //res.json({message:"hi"})
+        //try {
+            const thought = await Thought.find().sort({ createdAt: -1 });
             res.json(thought);
-        } catch (err) {
-            res.status(500).json(err);
-        };
+        //} catch (err) {
+        //    res.status(500).json(err);
+        //};
     },
 
     async getSingleThought(req, res) {
