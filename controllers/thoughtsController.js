@@ -33,16 +33,19 @@ const thoughtController = {
             res.status(500).json(err);
         }
     },
-
     async deleteThought(req, res) {
         try {
             const thought = await Thought.findByIdAndDelete({ _id: req.params.thoughtId });
-            res.status(200).json(thought);
+            if (!thought) {
+                res.status(404).json({ message: 'Thought not found' });
+            } else {
+                res.status(200).json({ message: 'Thought removed successfully' });
+            }
         } catch (err) {
-            res.status()
+            res.status(500).json(err);
         }
     },
-
+    
     async updateThought(req, res) {
         try {
             const thought = await Thought.findByIdAndUpdate(req.params.thoughtId, req.body, {
