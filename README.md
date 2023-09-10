@@ -12,8 +12,12 @@
 - [License](#license)
 
 ## Introduction
+![insomniatest](https://github.com/kevhuff/nosql-social/assets/3771399/72873a96-284a-42a1-8d01-3dfa9f1bed52)
+
 
 Social Networking Platform
+
+
 
 This NoSql application serves as the backend for a social networking platform. Users can interact with the platform to perform various actions, such as creating and managing thoughts, adding and removing friends, and more. The application utilizes MongoDB as the database to store user data and thoughts.
 
