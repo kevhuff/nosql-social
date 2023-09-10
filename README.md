@@ -1,7 +1,5 @@
 # NoSql Social 
 
-Short project description here.
-
 ## Table of Contents
 
 - [Introduction](#introduction)
