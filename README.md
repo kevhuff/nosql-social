@@ -1,4 +1,4 @@
-# Your Project Name
+# NoSql Social 
 
 Short project description here.
 
